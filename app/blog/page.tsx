@@ -52,7 +52,7 @@ export default function Page() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {blogPosts.map((post) => (
           <Link href={`/blog/${post.slug}`} key={post.$id}>
-            <a className="bg-background rounded-lg shadow-lg overflow-hidden flex">
+            <div className="bg-background rounded-lg shadow-lg overflow-hidden flex">
               <div className="aspect-video bg-muted rounded-t-lg overflow-hidden">
                 <Image 
                   src="/blog.jpg" 
@@ -84,7 +84,7 @@ export default function Page() {
                   <span className="text-muted-foreground text-sm">{post.author}</span>
                 </div>
               </div>
-            </a>
+            </div>
           </Link>
         ))}
       </div>
