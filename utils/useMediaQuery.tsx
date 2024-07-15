@@ -1,61 +1,44 @@
-import { useState } from 'react'
-
-import { useIsomorphicLayoutEffect } from 'usehooks-ts'
+'use client';
+import { useState, useEffect } from 'react';
 
 type UseMediaQueryOptions = {
-  defaultValue?: boolean
-  initializeWithValue?: boolean
-}
-
-const IS_SERVER = typeof window === 'undefined'
+  defaultValue?: boolean;
+  initializeWithValue?: boolean;
+};
 
 export function useMediaQuery(
   query: string,
-  {
-    defaultValue = false,
-    initializeWithValue = true,
-  }: UseMediaQueryOptions = {},
+  { defaultValue = false, initializeWithValue = true }: UseMediaQueryOptions = {}
 ): boolean {
-  const getMatches = (query: string): boolean => {
-    if (IS_SERVER) {
-      return defaultValue
-    }
-    return window.matchMedia(query).matches
-  }
-
   const [matches, setMatches] = useState<boolean>(() => {
-    if (initializeWithValue) {
-      return getMatches(query)
-    }
-    return defaultValue
-  })
+    // Initialize with defaultValue or a static value to avoid mismatches
+    return initializeWithValue ? defaultValue : false;
+  });
 
-  // Handles the change event of the media query.
-  function handleChange() {
-    setMatches(getMatches(query))
-  }
+  useEffect(() => {
+    const matchMedia = window.matchMedia(query);
 
-  useIsomorphicLayoutEffect(() => {
-    const matchMedia = window.matchMedia(query)
+    const handleChange = () => {
+      setMatches(matchMedia.matches);
+    };
 
-    // Triggered at the first client-side load and if query changes
-    handleChange()
+    handleChange(); // Set initial state based on media query match
 
     // Use deprecated `addListener` and `removeListener` to support Safari < 14 (#135)
     if (matchMedia.addListener) {
-      matchMedia.addListener(handleChange)
+      matchMedia.addListener(handleChange);
     } else {
-      matchMedia.addEventListener('change', handleChange)
+      matchMedia.addEventListener('change', handleChange);
     }
 
     return () => {
       if (matchMedia.removeListener) {
-        matchMedia.removeListener(handleChange)
+        matchMedia.removeListener(handleChange);
       } else {
-        matchMedia.removeEventListener('change', handleChange)
+        matchMedia.removeEventListener('change', handleChange);
       }
-    }
-  }, [query])
+    };
+  }, [query]);
 
-  return matches
+  return matches;
 }

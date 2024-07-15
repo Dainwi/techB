@@ -35,7 +35,7 @@ export default function Nav() {
         <nav className="relative mx-8 mb-24 flex justify-between items-center pt-12 pb-6 font-medium md:mx-16 lg:mx-32 z-50">
             {/* Title */}
             <h1 className="text-lg font-bold">
-                <a className="flex items-center justify-center" href="#">
+                <a className="flex items-center justify-center" href="/">
                     <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
                         <path d="M12.67 19a2 2 0 0 0 1.416-.588l6.154-6.172a6 6 0 0 0-8.49-8.49L5.586 9.914A2 2 0 0 0 5 11.328V18a1 1 0 0 0 1 1z" />
                         <path d="M16 8 2 22" />
