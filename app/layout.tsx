@@ -31,10 +31,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(
+      <body className={ cn(
           'antialiased',
           fontHeading.variable,
-          fontBody.variable
+          fontBody.variable,
         )}>
         <Nav/>
         {children}

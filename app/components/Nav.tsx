@@ -32,7 +32,7 @@ export default function Nav() {
     };
 
     return (
-        <nav className="relative mx-8 mb-8 flex justify-between items-center pt-12 pb-6 font-medium md:mx-16 lg:mx-32 z-50">
+        <nav className="relative mx-auto mb-8 flex justify-between items-center pt-12 pb-6 px-5 font-medium container z-50">
             {/* Title */}
             <h1 className="text-lg font-bold">
                 <a className="flex items-center justify-center" href="/">
