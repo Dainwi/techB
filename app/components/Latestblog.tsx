@@ -60,7 +60,7 @@ export default function LatestBlog() {
         <div className="mx-auto grid items-start gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-3">
           {blogPosts.map((post, index) => (
             <Link href={`/blog/${post.slug}`} key={post.$id}>
-              <a className="rounded-lg border bg-card text-card-foreground shadow-sm block hover:shadow-lg transition-shadow duration-300">
+              <div className="rounded-lg border bg-card text-card-foreground shadow-sm block hover:shadow-lg transition-shadow duration-300">
                 <div className="p-6">
                   <div className="space-y-2">
                     <h3 className="text-lg font-bold">{post.title}</h3>
@@ -80,7 +80,7 @@ export default function LatestBlog() {
                     </ReactMarkdown>
                   </div>
                 </div>
-              </a>
+              </div>
             </Link>
           ))}
         </div>
