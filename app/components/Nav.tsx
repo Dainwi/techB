@@ -32,7 +32,7 @@ export default function Nav() {
     };
 
     return (
-        <nav className="relative mx-8 mb-24 flex justify-between items-center pt-12 pb-6 font-medium md:mx-16 lg:mx-32 z-50">
+        <nav className="relative mx-8 mb-8 flex justify-between items-center pt-12 pb-6 font-medium md:mx-16 lg:mx-32 z-50">
             {/* Title */}
             <h1 className="text-lg font-bold">
                 <a className="flex items-center justify-center" href="/">
@@ -41,7 +41,7 @@ export default function Nav() {
                         <path d="M16 8 2 22" />
                         <path d="M17.5 15H9" />
                     </svg>
-                    <span className="font-bold text-xl ml-2">Blog</span>
+                    <span className="font-bold text-xl ml-2 text-[#003C43]">TechB</span>
                 </a>
                 <svg
                     className="absolute bottom-0"
@@ -54,7 +54,7 @@ export default function Nav() {
                     <path
                         d="M2 2L248 2"
                         strokeWidth={2}
-                        stroke="#282828"
+                        stroke="#135D66"
                         strokeLinecap="round"
                     />
                 </svg>

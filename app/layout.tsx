@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque } from 'next/font/google'
-import { Space_Mono } from 'next/font/google'
+import { Poppins } from 'next/font/google'
 import { cn } from '@/lib/utils'
 import "./globals.css";
 import Nav from "./components/Nav";
@@ -12,7 +12,7 @@ const fontHeading = Bricolage_Grotesque({
   variable: '--font-heading',
 })
 
-const fontBody = Space_Mono({
+const fontBody = Poppins({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-body',
