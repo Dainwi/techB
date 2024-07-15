@@ -74,7 +74,12 @@ export default function LatestBlog() {
                       })}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      {post.description.length > 128 ? post.description.slice(0, 128) + '...' : post.description}
+                      <ReactMarkdown className="markdown">
+                        {post.description.length > 128
+                          ? post.description.slice(0, 128) + '...'
+                          : post.description
+                        }
+                      </ReactMarkdown>
                     </p>
                   </div>
                 </div>
