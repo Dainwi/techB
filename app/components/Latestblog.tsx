@@ -1,85 +1,88 @@
-export default function Latestblog(){
-    return(
-        <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Latest Blog Posts</h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Explore our latest blog posts and stay informed on the topics that matter to you.
-                </p>
-              </div>
-            </div>
-            <div className="mx-auto grid items-start gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-3">
-              <div className="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
-                <div className="p-6">
-                  <div className="space-y-2">
-                    <h3 className="text-lg font-bold">The Future of Web Development</h3>
-                    <p className="text-sm text-muted-foreground">By John Doe | June 1, 2023</p>
-                    <p className="text-sm text-muted-foreground">
-                      Explore the latest trends and technologies shaping the future of web development.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
-                <div className="p-6">
-                  <div className="space-y-2">
-                    <h3 className="text-lg font-bold">The Rise of Artificial Intelligence</h3>
-                    <p className="text-sm text-muted-foreground">By Jane Smith | May 15, 2023</p>
-                    <p className="text-sm text-muted-foreground">
-                      Discover how AI is transforming industries and revolutionizing the way we live and work.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
-                <div className="p-6">
-                  <div className="space-y-2">
-                    <h3 className="text-lg font-bold">Sustainable Living: Tips and Tricks</h3>
-                    <p className="text-sm text-muted-foreground">By Sarah Johnson | April 20, 2023</p>
-                    <p className="text-sm text-muted-foreground">
-                      Learn practical ways to reduce your carbon footprint and live a more eco-friendly lifestyle.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
-                <div className="p-6">
-                  <div className="space-y-2">
-                    <h3 className="text-lg font-bold">The Importance of Mental Health</h3>
-                    <p className="text-sm text-muted-foreground">By Michael Brown | March 30, 2023</p>
-                    <p className="text-sm text-muted-foreground">
-                      Explore strategies for maintaining a healthy mind and finding balance in our fast-paced world.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
-                <div className="p-6">
-                  <div className="space-y-2">
-                    <h3 className="text-lg font-bold">The Future of Remote Work</h3>
-                    <p className="text-sm text-muted-foreground">By Emily Davis | February 10, 2023</p>
-                    <p className="text-sm text-muted-foreground">
-                      Discover the latest trends and best practices for thriving in a remote work environment.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
-                <div className="p-6">
-                  <div className="space-y-2">
-                    <h3 className="text-lg font-bold">The Power of Storytelling in Marketing</h3>
-                    <p className="text-sm text-muted-foreground">By David Lee | January 5, 2023</p>
-                    <p className="text-sm text-muted-foreground">
-                      Learn how to leverage the art of storytelling to captivate your audience and drive business
-                      growth.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+/* eslint-disable react/no-children-prop */
+/* eslint-disable @next/next/no-img-element */
+'use client'
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { Client, Databases, Models, Query } from 'appwrite';
+import ReactMarkdown from 'react-markdown';
+import Link from 'next/link';
+
+const client = new Client()
+  .setEndpoint('https://cloud.appwrite.io/v1')
+  .setProject('6694d7e7003491b18c98');
+
+interface BlogPost {
+  title: string;
+  published_on: number; // Assuming this is a timestamp
+  description: string;
+  slug: string;
+  content: string; // Assuming there is a content field for the full post content
+}
+
+async function fetchBlogPosts(): Promise<BlogPost[]> {
+  const databases = new Databases(client);
+  const response = await databases.listDocuments<BlogPost>(
+    '6694e0fd0014dc3a6f44', // Replace with your collection ID
+    '6694e24f00089d362812',   // Replace with your database ID
+    [
+      Query.orderDesc('published_on') // Sort by published_on in descending order
+    ]
+  );
+  return response.documents;
+}
+
+export default function LatestBlog() {
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const posts = await fetchBlogPosts();
+        setBlogPosts(posts);
+      } catch (error) {
+        console.error('Error fetching blog posts:', error);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
+  return (
+    <section className="w-full py-12 md:py-24 lg:py-32">
+      <div className="container px-4 md:px-6">
+        <div className="flex flex-col items-center justify-center space-y-4 text-center">
+          <div className="space-y-2">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Latest Blog Posts</h2>
+            <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+              Explore our latest blog posts and stay informed on the topics that matter to you.
+            </p>
           </div>
-        </section>
-    );
+        </div>
+        <div className="mx-auto grid items-start gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-3">
+          {blogPosts.map((post, index) => (
+            <Link href={`/blog/${post.slug}`} key={index}>
+              <div className="rounded-lg border bg-card text-card-foreground shadow-sm block hover:shadow-lg transition-shadow duration-300">
+                <div className="p-6">
+                  <div className="space-y-2">
+                    <h3 className="text-lg font-bold">{post.title}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Published on {new Date(post.published_on).toLocaleDateString(undefined, {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                      })}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {post.description.length > 128 ? post.description.slice(0, 128) + '...' : post.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }

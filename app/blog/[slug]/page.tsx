@@ -1,8 +1,10 @@
-// app/blog/[slug]/page.tsx
-
+/* eslint-disable @next/next/no-img-element */
+'use client'
+import { useEffect, useState } from 'react';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Client, Databases, Query } from 'appwrite';
+import ReactMarkdown from 'react-markdown';
 
 const client = new Client()
   .setEndpoint('https://cloud.appwrite.io/v1')
@@ -12,15 +14,16 @@ interface BlogPost {
   slug: string;
   title: string;
   category: string;
-  date: string;
+  published_on: string;
   description: string;
   author: string;
   content: string;
+  image: string;
 }
 
 async function fetchPost(slug: string): Promise<BlogPost | null> {
   const databases = new Databases(client);
-  const response = await databases.listDocuments(
+  const response = await databases.listDocuments<BlogPost>(
     '6694e0fd0014dc3a6f44',
     '6694e24f00089d362812',
     [Query.equal('slug', slug)]
@@ -30,29 +33,40 @@ async function fetchPost(slug: string): Promise<BlogPost | null> {
     return null;
   }
 
-  return response.documents[0] as BlogPost;
+  return response.documents[0];
 }
 
-export default async function PostPage({ params }: { params: { slug: string } }) {
-  const post = await fetchPost(params.slug);
+export default function PostPage({ params }: { params: { slug: string } }) {
+  const [post, setPost] = useState<BlogPost | null>(null);
+
+  useEffect(() => {
+    const fetchPostData = async () => {
+      const postData = await fetchPost(params.slug);
+      if (postData) {
+        setPost(postData);
+      } else {
+        notFound();
+      }
+    };
+
+    fetchPostData();
+  }, [params.slug]);
 
   if (!post) {
-    notFound();
+    return <span className="loader"></span>; // Placeholder for loading state
   }
 
   return (
     <article className="prose prose-gray max-w-3xl mx-auto dark:prose-invert">
       <div className="space-y-2 not-prose">
+        <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">{post.title}</h1>
         <Image
-          src="/blog.jpg"
+          src={post.image}
           alt="Featured Image"
           width={1200}
           height={600}
-          className="aspect-video overflow-hidden rounded-lg object-cover"
+          className="aspect-video overflow-hidden rounded-lg object-cover my-5"
         />
-        <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
-          {post.title}
-        </h1>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
             <span className="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
@@ -60,19 +74,22 @@ export default async function PostPage({ params }: { params: { slug: string } })
             </span>
             <p className="text-sm font-medium">{post.author}</p>
           </div>
-          <p className="text-sm text-muted-foreground">Published on {post.date}</p>
+          {/* <p className="text-sm text-muted-foreground">Published on {post.published_on}</p> */}
+          <p className="text-sm text-muted-foreground">
+            Published on {new Date(post.published_on).toLocaleDateString(undefined, {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric',
+              timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            })}
+          </p>
+
+
         </div>
       </div>
-      <div dangerouslySetInnerHTML={{ __html: post.content }} />
+      <ReactMarkdown className="prose prose-gray max-w-3xl mx-auto dark:prose-invert markdown">
+        {post.content}
+      </ReactMarkdown>
     </article>
   );
-}
-
-export async function generateStaticParams() {
-  const databases = new Databases(client);
-  const response = await databases.listDocuments('6694e0fd0014dc3a6f44', '6694e24f00089d362812');
-
-  return response.documents.map((post) => ({
-    slug: post.slug,
-  }));
 }

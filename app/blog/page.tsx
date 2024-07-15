@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Client, Databases, Models } from "appwrite";
+import { Remarkable } from 'remarkable';
 
 const client = new Client()
   .setEndpoint('https://cloud.appwrite.io/v1')
@@ -16,6 +17,13 @@ interface BlogPost extends Models.Document {
   date: string;
   description: string;
   author: string;
+}
+
+// markdown parser
+const md = new Remarkable();
+function renderMarkdownToHTML(markdown: string) {
+  const renderedHTML = md.render(markdown);
+  return { __html: renderedHTML }; // Correct format for dangerouslySetInnerHTML
 }
 
 export default function Page() {
@@ -62,7 +70,8 @@ export default function Page() {
                   <span className="text-muted-foreground text-xs font-medium ml-2">{post.date}</span>
                 </div>
                 <h2 className="text-xl font-bold mb-2">{post.title}</h2>
-                <p className="text-muted-foreground text-sm">{post.description}</p>
+                {/* Use dangerouslySetInnerHTML properly */}
+                <p className="text-muted-foreground text-sm" dangerouslySetInnerHTML={renderMarkdownToHTML(post.description)} />
                 <div className="flex items-center mt-4">
                   <span className="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8 mr-2">
                     <img className="aspect-square h-full w-full" alt={post.author} src="/logomark.png" />
