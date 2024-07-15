@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useState } from 'react';
 import { Client, Databases, Query, Models } from 'appwrite'; // Import Models from appwrite
 
