@@ -3,14 +3,15 @@
 import { useEffect, useState } from 'react';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { Client, Databases, Query } from 'appwrite';
+import { Client, Databases, Query, Models } from 'appwrite'; // Import Models
 import ReactMarkdown from 'react-markdown';
 
 const client = new Client()
   .setEndpoint('https://cloud.appwrite.io/v1')
   .setProject('6694d7e7003491b18c98');
 
-interface BlogPost {
+// Define a generic interface extending Models.Document
+interface BlogPost extends Models.Document {
   slug: string;
   title: string;
   category: string;
@@ -74,7 +75,6 @@ export default function PostPage({ params }: { params: { slug: string } }) {
             </span>
             <p className="text-sm font-medium">{post.author}</p>
           </div>
-          {/* <p className="text-sm text-muted-foreground">Published on {post.published_on}</p> */}
           <p className="text-sm text-muted-foreground">
             Published on {new Date(post.published_on).toLocaleDateString(undefined, {
               day: '2-digit',
@@ -83,8 +83,6 @@ export default function PostPage({ params }: { params: { slug: string } }) {
               timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
             })}
           </p>
-
-
         </div>
       </div>
       <ReactMarkdown className="prose prose-gray max-w-3xl mx-auto dark:prose-invert markdown">

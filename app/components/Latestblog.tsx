@@ -73,14 +73,14 @@ export default function LatestBlog() {
                         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
                       })}
                     </p>
-                    <p className="text-sm text-muted-foreground">
-                      <ReactMarkdown className="markdown">
+                    {/* <p className=""> */}
+                      <ReactMarkdown className="markdown text-sm text-muted-foreground">
                         {post.description.length > 128
                           ? post.description.slice(0, 128) + '...'
                           : post.description
                         }
                       </ReactMarkdown>
-                    </p>
+                    {/* </p> */}
                   </div>
                 </div>
               </div>
