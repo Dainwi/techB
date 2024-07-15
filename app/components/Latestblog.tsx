@@ -1,9 +1,6 @@
-/* eslint-disable react/no-children-prop */
-/* eslint-disable @next/next/no-img-element */
-'use client'
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
-import { Client, Databases, Models, Query } from 'appwrite';
+import { Client, Databases, Query, Models } from 'appwrite'; // Import Models from appwrite
+
 import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
 
@@ -11,7 +8,8 @@ const client = new Client()
   .setEndpoint('https://cloud.appwrite.io/v1')
   .setProject('6694d7e7003491b18c98');
 
-interface BlogPost {
+// Extend BlogPost with Document from appwrite.Models
+interface BlogPost extends Models.Document {
   title: string;
   published_on: number; // Assuming this is a timestamp
   description: string;
@@ -60,8 +58,8 @@ export default function LatestBlog() {
         </div>
         <div className="mx-auto grid items-start gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-3">
           {blogPosts.map((post, index) => (
-            <Link href={`/blog/${post.slug}`} key={index}>
-              <div className="rounded-lg border bg-card text-card-foreground shadow-sm block hover:shadow-lg transition-shadow duration-300">
+            <Link href={`/blog/${post.slug}`} key={post.$id}>
+              <a className="rounded-lg border bg-card text-card-foreground shadow-sm block hover:shadow-lg transition-shadow duration-300">
                 <div className="p-6">
                   <div className="space-y-2">
                     <h3 className="text-lg font-bold">{post.title}</h3>
@@ -73,17 +71,15 @@ export default function LatestBlog() {
                         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
                       })}
                     </p>
-                    {/* <p className=""> */}
-                      <ReactMarkdown className="markdown text-sm text-muted-foreground">
-                        {post.description.length > 128
-                          ? post.description.slice(0, 128) + '...'
-                          : post.description
-                        }
-                      </ReactMarkdown>
-                    {/* </p> */}
+                    <ReactMarkdown className="markdown text-sm text-muted-foreground">
+                      {post.description.length > 128
+                        ? post.description.slice(0, 128) + '...'
+                        : post.description
+                      }
+                    </ReactMarkdown>
                   </div>
                 </div>
-              </div>
+              </a>
             </Link>
           ))}
         </div>
