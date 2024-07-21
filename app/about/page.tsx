@@ -55,7 +55,7 @@ export default function About() {
           <div className="max-w-2xl">
             <h1 className="text-4xl font-bold mb-4">About Me</h1>
             <p className="text-lg text-gray-700 mb-6">
-              Hi, I'm Dainwi, a full stack developer passionate about building web applications
+              Hi, I&apos;m Dainwi, a full stack developer passionate about building web applications
               and contributing to open-source projects. I love to explore new technologies
               and help people solve problems through code.
             </p>
