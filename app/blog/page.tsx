@@ -9,7 +9,7 @@ import ReactMarkdown from 'react-markdown';
 
 const client = new Client()
   .setEndpoint('https://cloud.appwrite.io/v1')
-  .setProject('6694d7e7003491b18c98');
+  .setProject(process.env.NEXT_PUBLIC_PROJECT_ID as string);
 
 interface BlogPost extends Models.Document {
   slug: string;
@@ -18,7 +18,7 @@ interface BlogPost extends Models.Document {
   date: string;
   description: string;
   author: string;
-  content: string; // Assuming 'content' is the Markdown field
+  content: string;
 }
 
 export default function Page() {
@@ -29,9 +29,9 @@ export default function Page() {
       try {
         const databases = new Databases(client);
         const response = await databases.listDocuments<BlogPost>(
-          '6694e0fd0014dc3a6f44',
-          '6694e24f00089d362812',
-          [Query.orderDesc('published_on')] // Sort by date in descending order
+          process.env.NEXT_PUBLIC_DATABASE_ID as string,
+          process.env.NEXT_PUBLIC_COLLECTION_ID as string,
+          [Query.orderDesc('published_on')]
         );
         setBlogPosts(response.documents);
       } catch (error) {
@@ -40,7 +40,7 @@ export default function Page() {
     };
 
     fetchBlogPosts();
-  }, []); // Empty array ensures this effect runs only once
+  }, []);
 
   // Function to render Markdown content using ReactMarkdown
   const renderMarkdownToJSX = (markdown: string) => (
@@ -52,7 +52,7 @@ export default function Page() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {blogPosts.map((post) => (
           <Link href={`/blog/${post.slug}`} key={post.$id}>
-            <a className="bg-background rounded-lg shadow-lg overflow-hidden flex">
+            <div className="bg-background rounded-lg shadow-lg overflow-hidden flex flex-col">
               <div className="aspect-video bg-muted rounded-t-lg overflow-hidden">
                 <Image 
                   src="/blog.jpg" 
@@ -72,7 +72,6 @@ export default function Page() {
                     <span className="text-muted-foreground text-xs font-medium ml-2">{post.date}</span>
                   </div>
                   <h2 className="text-xl font-bold mb-2">{post.title}</h2>
-                  {/* Render Markdown using ReactMarkdown */}
                   <div className="text-muted-foreground text-sm">
                     {renderMarkdownToJSX(post.description)}
                   </div>
@@ -84,7 +83,7 @@ export default function Page() {
                   <span className="text-muted-foreground text-sm">{post.author}</span>
                 </div>
               </div>
-            </a>
+            </div>
           </Link>
         ))}
       </div>

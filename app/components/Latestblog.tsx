@@ -1,31 +1,29 @@
 'use client'
 import { useEffect, useState } from 'react';
-import { Client, Databases, Query, Models } from 'appwrite'; // Import Models from appwrite
-
+import { Client, Databases, Query, Models } from 'appwrite';
 import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const client = new Client()
   .setEndpoint('https://cloud.appwrite.io/v1')
-  .setProject('6694d7e7003491b18c98');
+  .setProject(process.env.NEXT_PUBLIC_PROJECT_ID as string);
 
-// Extend BlogPost with Document from appwrite.Models
 interface BlogPost extends Models.Document {
   title: string;
-  published_on: number; // Assuming this is a timestamp
+  published_on: number;
   description: string;
   slug: string;
-  content: string; // Assuming there is a content field for the full post content
+  content: string;
+  image: string; // Assuming you have an image URL field in your BlogPost document
 }
 
 async function fetchBlogPosts(): Promise<BlogPost[]> {
   const databases = new Databases(client);
   const response = await databases.listDocuments<BlogPost>(
-    '6694e0fd0014dc3a6f44', // Replace with your collection ID
-    '6694e24f00089d362812',   // Replace with your database ID
-    [
-      Query.orderDesc('published_on') // Sort by published_on in descending order
-    ]
+    process.env.NEXT_PUBLIC_DATABASE_ID as string,
+    process.env.NEXT_PUBLIC_COLLECTION_ID as string,
+    [Query.orderDesc('published_on')]
   );
   return response.documents;
 }
@@ -57,10 +55,17 @@ export default function LatestBlog() {
             </p>
           </div>
         </div>
-        <div className="mx-auto grid items-start gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-3">
-          {blogPosts.map((post, index) => (
+        <div className="mx-auto my-6 grid items-start gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-3">
+          {blogPosts.map((post) => (
             <Link href={`/blog/${post.slug}`} key={post.$id}>
-              <a className="rounded-lg border bg-card text-card-foreground shadow-sm block hover:shadow-lg transition-shadow duration-300">
+              <div className="rounded-lg border bg-card text-card-foreground shadow-sm block hover:shadow-lg transition-shadow duration-300">
+                <Image
+                  src={post.image}
+                  alt={post.title}
+                  width={600}
+                  height={400}
+                  className="rounded-t-lg w-full h-64 object-cover"
+                />
                 <div className="p-6">
                   <div className="space-y-2">
                     <h3 className="text-lg font-bold">{post.title}</h3>
@@ -75,12 +80,11 @@ export default function LatestBlog() {
                     <ReactMarkdown className="markdown text-sm text-muted-foreground">
                       {post.description.length > 128
                         ? post.description.slice(0, 128) + '...'
-                        : post.description
-                      }
+                        : post.description}
                     </ReactMarkdown>
                   </div>
                 </div>
-              </a>
+              </div>
             </Link>
           ))}
         </div>
