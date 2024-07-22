@@ -1,5 +1,3 @@
-// app/blog/[slug]/generateStaticParams.ts
-
 import { Client, Databases } from 'appwrite';
 
 const client = new Client()
@@ -13,13 +11,13 @@ export async function generateStaticParams() {
     process.env.NEXT_PUBLIC_COLLECTION_ID as string
   );
 
-  // Check for valid response and handle errors
+ 
   if (!response.documents || !Array.isArray(response.documents)) {
     console.error('Unexpected response format:', response);
     return [];
   }
 
-  // Generate paths for static pages
+
   const paths = response.documents.map((post) => ({
     slug: post.slug,
   }));

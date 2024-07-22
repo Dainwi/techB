@@ -1,5 +1,3 @@
-// app/api/blog-posts/[slug]/route.ts
-
 import { Client, Databases, Query } from 'appwrite';
 
 const client = new Client()
