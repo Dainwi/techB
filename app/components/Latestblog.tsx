@@ -15,7 +15,7 @@ interface BlogPost extends Models.Document {
   description: string;
   slug: string;
   content: string;
-  image: string; // Assuming you have an image URL field in your BlogPost document
+  image: string;
 }
 
 async function fetchBlogPosts(): Promise<BlogPost[]> {
