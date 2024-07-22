@@ -1,15 +1,10 @@
 // app/blog/[slug]/page.tsx
 
 import React from 'react';
-import { Client, Databases, Models } from 'appwrite';
 import ReactMarkdown from 'react-markdown';
 import Image from 'next/image';
 
-const client = new Client()
-  .setEndpoint('https://cloud.appwrite.io/v1')
-  .setProject(process.env.NEXT_PUBLIC_PROJECT_ID as string);
-
-interface BlogPost extends Models.Document {
+interface BlogPost {
   slug: string;
   title: string;
   category: string;
@@ -17,23 +12,21 @@ interface BlogPost extends Models.Document {
   description: string;
   author: string;
   content: string;
+  image?: string;
 }
 
 export async function generateStaticParams() {
-  const databases = new Databases(client);
-  const response = await databases.listDocuments(
-    process.env.NEXT_PUBLIC_DATABASE_ID as string,
-    process.env.NEXT_PUBLIC_COLLECTION_ID as string
-  );
+  const res = await fetch('https://technologyblog.vercel.app/api/blog-posts', {
+    cache: 'no-store',
+  });
 
-  // Check for valid response and handle errors
-  if (!response.documents || !Array.isArray(response.documents)) {
-    console.error('Unexpected response format:', response);
+  if (!res.ok) {
+    console.error('Failed to fetch blog posts:', res.statusText);
     return [];
   }
 
-  // Generate paths for static pages
-  const paths = response.documents.map((post) => ({
+  const data = await res.json();
+  const paths = data.map((post: BlogPost) => ({
     slug: post.slug,
   }));
 
@@ -45,7 +38,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   let post: BlogPost | null = null;
 
   try {
-    const res = await fetch(`api/blog-posts/${slug}`, {
+    const res = await fetch(`https://technologyblog.vercel.app/api/blog-posts/${slug}`, {
       cache: 'no-store',
     });
 
@@ -101,4 +94,3 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     </div>
   );
 }
-//TODO: Post not found 
