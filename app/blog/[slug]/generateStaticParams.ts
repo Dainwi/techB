@@ -13,18 +13,16 @@ export async function generateStaticParams() {
     process.env.NEXT_PUBLIC_COLLECTION_ID as string
   );
 
-  // Ensure the response has a 'documents' array
+  // Check for valid response and handle errors
   if (!response.documents || !Array.isArray(response.documents)) {
     console.error('Unexpected response format:', response);
-    return { paths: [], fallback: 'blocking' };
+    return [];
   }
 
+  // Generate paths for static pages
   const paths = response.documents.map((post) => ({
     slug: post.slug,
   }));
 
-  return {
-    paths,
-    fallback: 'blocking', // Use 'blocking' if you want to handle new slugs dynamically
-  };
+  return paths;
 }
