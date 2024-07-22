@@ -1,16 +1,11 @@
 'use client'
 import { useEffect, useState } from 'react';
-import { Client, Databases, Query, Models } from 'appwrite';
 import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
 import Image from 'next/image';
-const { NEXT_PUBLIC_PROJECT_ID, NEXT_PUBLIC_DATABASE_ID, NEXT_PUBLIC_COLLECTION_ID } = process.env;
 
-const client = new Client()
-  .setEndpoint('https://cloud.appwrite.io/v1')
-  .setProject(NEXT_PUBLIC_PROJECT_ID as string);
-
-interface BlogPost extends Models.Document {
+interface BlogPost {
+  $id: string;
   title: string;
   published_on: number;
   description: string;
@@ -19,31 +14,40 @@ interface BlogPost extends Models.Document {
   image: string;
 }
 
-async function fetchBlogPosts(): Promise<BlogPost[]> {
-  const databases = new Databases(client);
-  const response = await databases.listDocuments<BlogPost>(
-    NEXT_PUBLIC_DATABASE_ID as string,
-    NEXT_PUBLIC_COLLECTION_ID as string,
-    [Query.orderDesc('published_on')]
-  );
-  return response.documents;
-}
-
 export default function LatestBlog() {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchPosts = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const posts = await fetchBlogPosts();
-        setBlogPosts(posts);
+        const response = await fetch('/api/blog-posts');
+        if (!response.ok) {
+          throw new Error('Failed to fetch');
+        }
+        const data = await response.json();
+        setBlogPosts(data);
       } catch (error) {
         console.error('Error fetching blog posts:', error);
+        setError('Failed to fetch blog posts');
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchPosts();
   }, []);
+
+  if (loading) {
+    return <p className='text-center my-6'>Loading....</p>
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
     <section className="w-full py-12 md:py-24 lg:py-32">
