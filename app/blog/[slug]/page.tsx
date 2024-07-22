@@ -1,93 +1,99 @@
-/* eslint-disable @next/next/no-img-element */
-'use client'
-import { useEffect, useState } from 'react';
-import { notFound } from 'next/navigation';
-import Image from 'next/image';
-import { Client, Databases, Query, Models } from 'appwrite'; // Import Models
+// app/blog/[slug]/page.tsx
+
+import React from 'react';
+import { Client, Databases, Models } from 'appwrite';
 import ReactMarkdown from 'react-markdown';
+import Image from 'next/image';
 
 const client = new Client()
   .setEndpoint('https://cloud.appwrite.io/v1')
   .setProject(process.env.NEXT_PUBLIC_PROJECT_ID as string);
 
-// Define a generic interface extending Models.Document
 interface BlogPost extends Models.Document {
   slug: string;
   title: string;
   category: string;
-  published_on: string;
+  date: string;
   description: string;
   author: string;
   content: string;
-  image: string;
 }
 
-async function fetchPost(slug: string): Promise<BlogPost | null> {
+export async function generateStaticParams() {
   const databases = new Databases(client);
-  const response = await databases.listDocuments<BlogPost>(
+  const response = await databases.listDocuments(
     process.env.NEXT_PUBLIC_DATABASE_ID as string,
-    process.env.NEXT_PUBLIC_COLLECTION_ID as string,
-    [Query.equal('slug', slug)]
+    process.env.NEXT_PUBLIC_COLLECTION_ID as string
   );
 
-  if (response.documents.length === 0) {
-    return null;
-  }
+  const paths = response.documents.map((post) => ({
+    slug: post.slug,
+  }));
 
-  return response.documents[0];
+  return {
+    paths,
+    fallback: 'blocking',
+  };
 }
 
-export default function PostPage({ params }: { params: { slug: string } }) {
-  const [post, setPost] = useState<BlogPost | null>(null);
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+  const { slug } = params;
+  let post: BlogPost | null = null;
 
-  useEffect(() => {
-    const fetchPostData = async () => {
-      const postData = await fetchPost(params.slug);
-      if (postData) {
-        setPost(postData);
-      } else {
-        notFound();
-      }
-    };
+  try {
+    const res = await fetch(`http://localhost:3000/api/blog-posts/${slug}`, {
+      cache: 'no-store',
+    });
 
-    fetchPostData();
-  }, [params.slug]);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch blog post: ${res.statusText}`);
+    }
+
+    post = await res.json();
+  } catch (error) {
+    console.error('Error fetching blog post:', error);
+    return <p>Post not found or error occurred</p>;
+  }
 
   if (!post) {
-    return <span className="loader"></span>; // Placeholder for loading state
+    return <p>Post not found</p>;
   }
 
   return (
-    <article className="prose prose-gray max-w-3xl mx-auto dark:prose-invert">
-      <div className="space-y-2 not-prose">
-        <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">{post.title}</h1>
-        <Image
-          src={post.image}
-          alt="Featured Image"
-          width={1200}
-          height={600}
-          className="aspect-video overflow-hidden rounded-lg object-cover my-5"
-        />
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <span className="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
-              <img className="aspect-square h-full w-full" src="/logomark.png" alt="Author Avatar" />
+    <div className="container mx-auto my-3 p-2">
+      <div className="bg-background rounded-lg shadow-lg overflow-hidden">
+        <div className="aspect-video bg-muted rounded-t-lg overflow-hidden">
+          <Image 
+            src={post.image || '/blog.jpg'} 
+            alt={`Image for ${post.title}`} 
+            width={600} 
+            height={400} 
+            className="w-full h-full object-cover" 
+            style={{ aspectRatio: '600 / 400', objectFit: 'cover' }} 
+          />
+        </div>
+        <div className="p-6">
+          <div className="flex items-center mb-2">
+            <span className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs font-medium">
+              {post.category}
             </span>
-            <p className="text-sm font-medium">{post.author}</p>
+            <span className="text-muted-foreground text-xs font-medium ml-2">{post.date}</span>
           </div>
-          <p className="text-sm text-muted-foreground">
-            Published on {new Date(post.published_on).toLocaleDateString(undefined, {
-              day: '2-digit',
-              month: '2-digit',
-              year: 'numeric',
-              timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-            })}
-          </p>
+          <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
+          <div className="text-muted-foreground text-sm mb-4">
+            <ReactMarkdown className="prose prose-gray max-w-full">{post.description}</ReactMarkdown>
+          </div>
+          <div className="text-muted-foreground text-sm">
+            <ReactMarkdown className="prose prose-gray max-w-full">{post.content}</ReactMarkdown>
+          </div>
+          <div className="flex items-center mt-4">
+            <span className="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8 mr-2">
+              <img className="aspect-square h-full w-full" alt={post.author} src="/logomark.png" />
+            </span>
+            <span className="text-muted-foreground text-sm">{post.author}</span>
+          </div>
         </div>
       </div>
-      <ReactMarkdown className="prose prose-gray max-w-3xl mx-auto dark:prose-invert markdown">
-        {post.content}
-      </ReactMarkdown>
-    </article>
+    </div>
   );
 }

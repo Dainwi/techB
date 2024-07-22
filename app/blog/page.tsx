@@ -4,14 +4,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Client, Databases, Models, Query } from "appwrite";
 import ReactMarkdown from 'react-markdown';
 
-const client = new Client()
-  .setEndpoint('https://cloud.appwrite.io/v1')
-  .setProject(process.env.NEXT_PUBLIC_PROJECT_ID as string);
-
-interface BlogPost extends Models.Document {
+interface BlogPost {
+  $id: string;
   slug: string;
   title: string;
   category: string;
@@ -23,19 +19,20 @@ interface BlogPost extends Models.Document {
 
 export default function Page() {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchBlogPosts = async () => {
       try {
-        const databases = new Databases(client);
-        const response = await databases.listDocuments<BlogPost>(
-          process.env.NEXT_PUBLIC_DATABASE_ID as string,
-          process.env.NEXT_PUBLIC_COLLECTION_ID as string,
-          [Query.orderDesc('published_on')]
-        );
-        setBlogPosts(response.documents);
+        const response = await fetch('/api/blog-posts');
+        if (!response.ok) {
+          throw new Error('Failed to fetch blog posts');
+        }
+        const data = await response.json();
+        setBlogPosts(data);
       } catch (error) {
         console.error('Error fetching blog posts:', error);
+        setError('Failed to fetch blog posts');
       }
     };
 
@@ -46,6 +43,10 @@ export default function Page() {
   const renderMarkdownToJSX = (markdown: string) => (
     <ReactMarkdown className="prose prose-gray max-w-full">{markdown}</ReactMarkdown>
   );
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
     <div className="container mx-auto my-3 p-2">
