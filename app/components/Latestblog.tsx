@@ -4,10 +4,11 @@ import { Client, Databases, Query, Models } from 'appwrite';
 import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
 import Image from 'next/image';
+const { NEXT_PUBLIC_PROJECT_ID, NEXT_PUBLIC_DATABASE_ID, NEXT_PUBLIC_COLLECTION_ID } = process.env;
 
 const client = new Client()
   .setEndpoint('https://cloud.appwrite.io/v1')
-  .setProject(process.env.NEXT_PUBLIC_PROJECT_ID as string);
+  .setProject(NEXT_PUBLIC_PROJECT_ID as string);
 
 interface BlogPost extends Models.Document {
   title: string;
@@ -21,8 +22,8 @@ interface BlogPost extends Models.Document {
 async function fetchBlogPosts(): Promise<BlogPost[]> {
   const databases = new Databases(client);
   const response = await databases.listDocuments<BlogPost>(
-    process.env.NEXT_PUBLIC_DATABASE_ID as string,
-    process.env.NEXT_PUBLIC_COLLECTION_ID as string,
+    NEXT_PUBLIC_DATABASE_ID as string,
+    NEXT_PUBLIC_COLLECTION_ID as string,
     [Query.orderDesc('published_on')]
   );
   return response.documents;
