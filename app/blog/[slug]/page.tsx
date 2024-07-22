@@ -45,7 +45,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   let post: BlogPost | null = null;
 
   try {
-    const res = await fetch(`http://localhost:3000/api/blog-posts/${slug}`, {
+    const res = await fetch(`api/blog-posts/${slug}`, {
       cache: 'no-store',
     });
 
@@ -101,3 +101,4 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     </div>
   );
 }
+//TODO: Post not found 
