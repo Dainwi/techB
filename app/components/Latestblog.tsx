@@ -42,7 +42,7 @@ export default function LatestBlog() {
   }, []);
 
   if (loading) {
-    return <p className='text-center my-6'>Loading....</p>
+    return <p className='text-center text-gray-400 my-6'>Loading....</p>
   }
 
   if (error) {
@@ -50,11 +50,20 @@ export default function LatestBlog() {
   }
 
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32">
-      <div className="container px-4 md:px-6">
+    <section className="relative w-full py-12 md:py-24 lg:py-32">
+      <div className="absolute inset-0">
+        <video
+          className="w-full h-full object-cover opacity-90"
+          src="/contact.mp4"
+          autoPlay
+          loop
+          muted
+        ></video>
+      </div>
+      <div className="relative z-10 text-gray-200 container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Latest Blog Posts</h2>
+            <h2 className="text-3xl font-bold  text-gray-200 tracking-tighter sm:text-5xl">Latest Blog Posts</h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
               Explore our latest blog posts and stay informed on the topics that matter to you.
             </p>
@@ -65,10 +74,10 @@ export default function LatestBlog() {
             <Link href={`/blog/${post.slug}`} key={post.$id}>
               <div className="rounded-lg border bg-card text-card-foreground shadow-sm block hover:shadow-lg transition-shadow duration-300">
                 <Image
-                  src={post.image}
-                  alt={post.title}
-                  width={600}
-                  height={400}
+                   src="/last.jpg"
+                   width={1270}
+                   height={1000}
+                   alt="Hero"
                   className="rounded-t-lg w-full h-64 object-cover"
                 />
                 <div className="p-6">

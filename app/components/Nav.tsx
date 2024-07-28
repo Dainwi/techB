@@ -32,16 +32,16 @@ export default function Nav() {
     };
 
     return (
-        <nav className="relative mx-auto mb-8 flex justify-between items-center pt-12 pb-6 px-5 font-medium container z-50">
+        <nav className=" absolute mx-auto mb-8 flex justify-between items-center pt-12 pb-6 px-5 font-medium container z-50 bg-slate-800 opacity-80">
             {/* Title */}
-            <h1 className="text-lg font-bold">
+            <h1 className="text-lg  text-gray-100 font-bold">
                 <a className="flex items-center justify-center" href="/">
                     <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
                         <path d="M12.67 19a2 2 0 0 0 1.416-.588l6.154-6.172a6 6 0 0 0-8.49-8.49L5.586 9.914A2 2 0 0 0 5 11.328V18a1 1 0 0 0 1 1z" />
                         <path d="M16 8 2 22" />
                         <path d="M17.5 15H9" />
                     </svg>
-                    <span className="font-bold text-xl ml-2 text-[#003C43]">TechB</span>
+                    <span className="font-bold text-xl ml-2 text-[#fefefe] ">TechB</span>
                 </a>
                 <svg
                     className="absolute bottom-0"
@@ -61,11 +61,11 @@ export default function Nav() {
             </h1>
 
             {matches && (
-                <div className="flex gap-12">
-                    <a href="/" className="text-sm font-medium hover:underline underline-offset-4">Home</a>
-                    <a href="/blog" className="text-sm font-medium hover:underline underline-offset-4">Blog</a>
-                    <a href="/about" className="text-sm font-medium hover:underline underline-offset-4">About</a>
-                    <a href="/contact" className="text-sm font-medium hover:underline underline-offset-4">Contact</a>
+                <div className="flex gap-12 text-gray-200">
+                    <a href="/" className="text-sm  text-gray-100 font-medium hover:underline underline-offset-4">Home</a>
+                    <a href="/blog" className="text-sm  text-gray-100 font-medium hover:underline underline-offset-4">Blog</a>
+                    <a href="/about" className="text-sm text-gray-100 font-medium hover:underline underline-offset-4">About</a>
+                    <a href="/contact" className="text-sm  text-gray-100 font-medium hover:underline underline-offset-4">Contact</a>
                 </div>
             )}
 

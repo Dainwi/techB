@@ -49,44 +49,55 @@ export default function Page() {
   }
 
   return (
-    <div className="container mx-auto my-3 p-2">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {blogPosts.map((post) => (
-          <Link href={`/blog/${post.slug}`} key={post.$id}>
-            <div className="bg-background rounded-lg shadow-lg overflow-hidden flex flex-col">
-              <div className="aspect-video bg-muted rounded-t-lg overflow-hidden">
-                <Image 
-                  src="/blog.jpg" 
-                  alt={`Image for ${post.title}`} 
-                  width={600} 
-                  height={400} 
-                  className="w-full h-full object-cover" 
-                  style={{ aspectRatio: '600 / 400', objectFit: 'cover' }} 
-                />
-              </div>
-              <div className="p-6 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center mb-2">
-                    <span className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs font-medium">
-                      {post.category}
+    <div className="relative w-full py-12 md:py-24 lg:py-32">
+      <div className="absolute inset-0">
+        <video
+          className="w-full h-full object-cover opacity-90"
+          src="/herodc.mp4"
+          autoPlay
+          loop
+          muted
+        ></video>
+      </div>
+      <div className="relative z-10 container mx-auto my-3 p-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {blogPosts.map((post) => (
+            <Link href={`/blog/${post.slug}`} key={post.$id}>
+              <div className="bg-background bg-opacity-90 rounded-lg shadow-lg overflow-hidden flex flex-col">
+                <div className="aspect-video bg-muted rounded-t-lg overflow-hidden">
+                  <Image 
+                    src="/blog.jpg" 
+                    alt={`Image for ${post.title}`} 
+                    width={600} 
+                    height={400} 
+                    className="w-full h-full object-cover" 
+                    style={{ aspectRatio: '600 / 400', objectFit: 'cover' }} 
+                  />
+                </div>
+                <div className="p-6 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center mb-2">
+                      <span className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs font-medium">
+                        {post.category}
+                      </span>
+                      <span className="text-muted-foreground text-xs font-medium ml-2">{post.date}</span>
+                    </div>
+                    <h2 className="text-xl font-bold mb-2">{post.title}</h2>
+                    <div className="text-muted-foreground text-sm">
+                      {renderMarkdownToJSX(post.description)}
+                    </div>
+                  </div>
+                  <div className="flex items-center mt-4">
+                    <span className="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8 mr-2">
+                      <img className="aspect-square h-full w-full" alt={post.author} src="/logomark.png" />
                     </span>
-                    <span className="text-muted-foreground text-xs font-medium ml-2">{post.date}</span>
+                    <span className="text-muted-foreground text-sm">{post.author}</span>
                   </div>
-                  <h2 className="text-xl font-bold mb-2">{post.title}</h2>
-                  <div className="text-muted-foreground text-sm">
-                    {renderMarkdownToJSX(post.description)}
-                  </div>
-                </div>
-                <div className="flex items-center mt-4">
-                  <span className="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8 mr-2">
-                    <img className="aspect-square h-full w-full" alt={post.author} src="/logomark.png" />
-                  </span>
-                  <span className="text-muted-foreground text-sm">{post.author}</span>
                 </div>
               </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );
