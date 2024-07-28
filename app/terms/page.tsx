@@ -8,14 +8,14 @@ const TermsOfService: FC = () => {
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold mb-6">Terms of Service</h1>
           <p className="text-lg mb-4">
-            These Terms of Service constitute a legally binding agreement made between you, whether personally or on behalf of an entity (“you”) and [Your Company Name] (“we,” “us” or “our”), concerning your access to and use of the [website name.com] website as well as any other media form, media channel, mobile website or mobile application related, linked, or otherwise connected thereto (collectively, the “Site”).
+            These Terms of Service constitute a legally binding agreement made between you, whether personally or on behalf of an entity (&ldquo;you&rdquo;) and TechB (&ldquo;we,&rdquo; &ldquo;us&rdquo; or &ldquo;our&rdquo;), concerning your access to and use of the <a href="https://technologyblog.vercel.app/">TechB</a> website as well as any other media form, media channel, mobile website or mobile application related, linked, or otherwise connected thereto (collectively, the &ldquo;Site&rdquo;).
           </p>
           <p className="text-lg mb-4">
             You agree that by accessing the Site, you have read, understood, and agree to be bound by all of these Terms of Service. IF YOU DO NOT AGREE WITH ALL OF THESE TERMS OF SERVICE, THEN YOU ARE EXPRESSLY PROHIBITED FROM USING THE SITE AND YOU MUST DISCONTINUE USE IMMEDIATELY.
           </p>
           <h2 className="text-2xl font-semibold mb-4">1. Intellectual Property Rights</h2>
           <p className="mb-4">
-            Unless otherwise indicated, the Site is our proprietary property and all source code, databases, functionality, software, website designs, audio, video, text, photographs, and graphics on the Site (collectively, the “Content”) and the trademarks, service marks, and logos contained therein (the “Marks”) are owned or controlled by us or licensed to us, and are protected by copyright and trademark laws and various other intellectual property rights and unfair competition laws of the United States, international copyright laws, and international conventions.
+            Unless otherwise indicated, the Site is our proprietary property and all source code, databases, functionality, software, website designs, audio, video, text, photographs, and graphics on the Site (collectively, the &ldquo;Content&rdquo;) and the trademarks, service marks, and logos contained therein (the &ldquo;Marks&rdquo;) are owned or controlled by us or licensed to us, and are protected by copyright and trademark laws and various other intellectual property rights and unfair competition laws of the United States, international copyright laws, and international conventions.
           </p>
           <h2 className="text-2xl font-semibold mb-4">2. User Representations</h2>
           <p className="mb-4">
@@ -45,7 +45,7 @@ const TermsOfService: FC = () => {
           </p>
           <h2 className="text-2xl font-semibold mb-4">7. Governing Law</h2>
           <p className="mb-4">
-            These Terms shall be governed by and defined following the laws of [Your Country]. [Your Company Name] and yourself irrevocably consent that the courts of [Your Country] shall have exclusive jurisdiction to resolve any dispute which may arise in connection with these terms.
+            These Terms shall be governed by and defined following the laws of India. TechB and yourself irrevocably consent that the courts of India shall have exclusive jurisdiction to resolve any dispute which may arise in connection with these terms.
           </p>
           <h2 className="text-2xl font-semibold mb-4">8. Contact Us</h2>
           <p className="mb-4">
