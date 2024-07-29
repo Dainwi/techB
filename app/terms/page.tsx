@@ -8,14 +8,14 @@ const TermsOfService: FC = () => {
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold mb-6">Terms of Service</h1>
           <p className="text-lg mb-4">
-            These Terms of Service constitute a legally binding agreement made between you, whether personally or on behalf of an entity (&ldquo;you&rdquo;) and TechB (&ldquo;we,&rdquo; &ldquo;us&rdquo; or &ldquo;our&rdquo;), concerning your access to and use of the <a href="https://technologyblog.vercel.app/">TechB</a> website as well as any other media form, media channel, mobile website or mobile application related, linked, or otherwise connected thereto (collectively, the &ldquo;Site&rdquo;).
+            These Terms of Service constitute a legally binding agreement made between you, whether personally or on behalf of an entity (&quote;you&quote;) and TechB (&quote;we,&quote; &quote;us&quote; or &quote;our&quote;), concerning your access to and use of the <a href="https://technologyblog.vercel.app/">TechB</a> website as well as any other media form, media channel, mobile website or mobile application related, linked, or otherwise connected thereto (collectively, the &quote;Site&quote;).
           </p>
           <p className="text-lg mb-4">
             You agree that by accessing the Site, you have read, understood, and agree to be bound by all of these Terms of Service. IF YOU DO NOT AGREE WITH ALL OF THESE TERMS OF SERVICE, THEN YOU ARE EXPRESSLY PROHIBITED FROM USING THE SITE AND YOU MUST DISCONTINUE USE IMMEDIATELY.
           </p>
           <h2 className="text-2xl font-semibold mb-4">1. Intellectual Property Rights</h2>
           <p className="mb-4">
-            Unless otherwise indicated, the Site is our proprietary property and all source code, databases, functionality, software, website designs, audio, video, text, photographs, and graphics on the Site (collectively, the &ldquo;Content&rdquo;) and the trademarks, service marks, and logos contained therein (the &ldquo;Marks&rdquo;) are owned or controlled by us or licensed to us, and are protected by copyright and trademark laws and various other intellectual property rights and unfair competition laws of the United States, international copyright laws, and international conventions.
+            Unless otherwise indicated, the Site is our proprietary property and all source code, databases, functionality, software, website designs, audio, video, text, photographs, and graphics on the Site (collectively, the &quote;Content&quote;) and the trademarks, service marks, and logos contained therein (the &quote;Marks&quote;) are owned or controlled by us or licensed to us, and are protected by copyright and trademark laws and various other intellectual property rights and unfair competition laws of the United States, international copyright laws, and international conventions.
           </p>
           <h2 className="text-2xl font-semibold mb-4">2. User Representations</h2>
           <p className="mb-4">
@@ -33,7 +33,7 @@ const TermsOfService: FC = () => {
           </ul>
           <h2 className="text-2xl font-semibold mb-4">4. User Generated Contributions</h2>
           <p className="mb-4">
-            The Site may invite you to chat, contribute to, or participate in blogs, message boards, online forums, and other functionality, and may provide you with the opportunity to create, submit, post, display, transmit, perform, publish, distribute, or broadcast content and materials to us or on the Site, including but not limited to text, writings, video, audio, photographs, graphics, comments, suggestions, or personal information or other material (collectively, "Contributions").
+            The Site may invite you to chat, contribute to, or participate in blogs, message boards, online forums, and other functionality, and may provide you with the opportunity to create, submit, post, display, transmit, perform, publish, distribute, or broadcast content and materials to us or on the Site, including but not limited to text, writings, video, audio, photographs, graphics, comments, suggestions, or personal information or other material (collectively, &quote;Contributions&quote;).
           </p>
           <h2 className="text-2xl font-semibold mb-4">5. Contribution License</h2>
           <p className="mb-4">
